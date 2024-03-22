@@ -38,7 +38,7 @@ const NewDriver = () => {
       const response = await axios.post(urlApi+`chauffeur/create/`+adminId, formData, {
         headers: {
           'Content-Type': 'application/json',
-          'token': token // Remplacez par votre jeton d'authentification
+          'Authorization': `Bearer ${token}` 
         }
       });
         console.log(response.data)
