@@ -1,0 +1,196 @@
+{
+    "url": "https://r2sbackend.onrender.com/",
+    "admin": {
+        "create": {
+            "api": "admin/create",
+            "methode": "POST",
+            "body": {
+                "nom": "string",
+                "email": "string",
+                "password": "string",
+                "cni": "string",
+                "role": "string (le role est 1 pour le gestionnaire de chauffeur, 2 pour l'admin de l'ecole et 3 pour l'admin de beta car) "
+            },
+            "outpout": {
+                "success": {
+                    "status": 200
+                },
+                "error": {
+                    "status": 400,
+                    "message": "user existing"
+                }
+            }
+        },
+        "login": {
+            "api": "admin/login",
+            "method": "POST",
+            "body": {
+                "email": "string",
+                "password": "string"
+            },
+            "outpout": {
+                "success": {
+                    "status": 200,
+                    "user": {
+                        "chauffeurs": [],
+                        "nom": "string",
+                        "id": "string",
+                        "email": "string",
+                        "cni": "string",
+                        "token": "string",
+                        "role": "string"
+                    }
+                },
+                "error": {
+                    "status": 400,
+                    "message": "email ou mot de passe incorrecte"
+                }
+            }
+        },
+        "creation du chauffeur": {
+            "api": "chauffeur/create/:idAdmin",
+            "methode": "POST",
+            "params": "idAdmin",
+            "header": "token",
+            "body": {
+                "nom": "string",
+                "email": "string",
+                "password": "string",
+                "cni": "string",
+                "phone": "string",
+                "photo": "string",
+                "dateNaissance": "string",
+                "planLocalisation": "string",
+                "ville": "string",
+                "quartier": "string",
+                "pays": "string"
+            },
+            "outpout": {
+                "success": {
+                    "status": 200,
+                    "message": "chauufeur créer avec succes"
+                },
+                "error": {
+                    "status": 400,
+                    "message": "user existing"
+                }
+            }
+        },
+        "aficher tous les admins":{
+            "api":"admin/allAdmin",
+            "methode":"GET"
+        }
+    },
+    "chauffeur": {
+        "login": {
+            "api": "chauffeur/login",
+            "method": "POST",
+            "body": {
+                "email": "string",
+                "password": "string"
+            },
+            "outpout": {
+                "success": {
+                    "status": 200,
+                    "user": {
+                        "enafants": [],
+                        "nom": "string",
+                        "id": "string",
+                        "email": "string",
+                        "cni": "string",
+                        "token": "string",
+                        "role": "string"
+                    }
+                },
+                "error": {
+                    "status": 400,
+                    "message": "email ou mot de passe incorrecte"
+                }
+            }
+        },
+        "tous les chauffeur":{
+            "api":"chauffeur/allChauffeurs",
+            "methode":"GET",
+            "output":"liste des chauffeurs"
+        },
+        "un chauffeur":{
+            "api":"chauffeur/oneChauffeur/:id",
+            "methode":"GET",
+            "output":{
+                "success" : "informations sur le chauffeur",
+                "error":{
+                    "status": 400,
+                    "message": "user not found"
+                }
+            }
+        }
+    },
+    "parent":{
+        "create":{
+            "api":"parent/create",
+            "methode":"POST",
+            "body":{
+                "nom":"string",
+                "email":"string",
+                "password":"string",
+                "cni":"string",
+                "phone":"string"
+            },
+            "outpout": {
+                "success": {
+                    "status": 200
+                },
+                "error": {
+                    "status": 400,
+                    "message": "user existing"
+                }
+            }
+        },
+        "login":{
+            "api": "parent/login",
+            "method": "POST",
+            "body": {
+                "email": "string",
+                "password": "string"
+            }, 
+            "outpout": {
+                "success": {
+                    "status": 200,
+                    "user": {
+                        "enafants": [],
+                        "nom": "string",
+                        "id": "string",
+                        "email": "string",
+                        "cni": "string",
+                        "token": "string"
+                    }
+                },
+                "error": {
+                    "status": 400,
+                    "message": "email ou mot de passe incorrecte"
+                }
+            }
+        }
+    },
+    "ecole":{
+        "create":{
+            "api":"/ecole/addSchool/:idAdmin",
+            "methode":"POST",
+            "body":{
+                "nomEcole":"string",
+                "adresse":"string",
+                "phone":"string",
+                "email":"string"
+            },
+            "header":{
+                "Authorization" : "Bearer (token admin)"
+            },
+            "output":{
+                "succes":{
+                    "status":201,
+                    "retour":"les informations d'une ecole"
+                }
+            }
+        }
+    }
+}

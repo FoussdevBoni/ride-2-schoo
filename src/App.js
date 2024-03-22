@@ -1,25 +1,22 @@
 import logo from './logo.svg';
 import './App.css';
+import '../src/assets/styles/style1.css'
+import '../src/assets/styles/profile.css'
+
+import { useEffect, useState } from 'react';
+import Navigation from './navigation/Navigation';
+import { Box } from '@mui/material';
+
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+   
+return (
+   <Box sx={{backgroundColor: '#f5f5f5'}}>
+      <Navigation />
+   </Box>
+)
+   
 }
 
 export default App;

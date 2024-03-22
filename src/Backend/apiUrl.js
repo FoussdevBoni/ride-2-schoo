@@ -1,0 +1,1 @@
+export const urlApi = 'https://r2sbackend-1.onrender.com/'
