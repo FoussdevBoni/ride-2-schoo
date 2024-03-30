@@ -119,7 +119,7 @@ useEffect(()=>{
       noValidate
       autoComplete="off"
     >
-           <TextField id="outlined-basic" label="Adresse email" variant="outlined" 
+           <TextField id="outlined-basic" label="Numéro CNI" variant="outlined" 
            type='number'
            onChange={(e)=>{
             setCni(e.target.value)
@@ -142,7 +142,7 @@ useEffect(()=>{
           }
           </Button>
           <Button sx={{ flex: 1, marginLeft: '0.5rem' }} color='primary' variant='outlined'
-            onClick={()=>{navigate('/')}}
+            onClick={()=>{navigate(-1)}}
           >
             Annuler
           </Button>
