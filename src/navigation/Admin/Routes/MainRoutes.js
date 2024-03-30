@@ -8,10 +8,11 @@ import ClientsPage from '../../../pages/Admin/Clients/ClientsPage';
 import DriversPage from '../../../pages/Admin/Drivers/DriversPage';
 import MapPage from '../../../components/sections/Admin/Map/Map';
 import AnnoncesPage from '../../../pages/Admin/Annonces/AnnoncesPage';
+import Home from '../../../pages/Admin/Home/Home';
 
 function MainRoutes(props) {
     const components = [
-        <ClientsPage />,
+        <Home />,
         <MapPage />,
         <DriversPage />,
         <ClientsPage />,

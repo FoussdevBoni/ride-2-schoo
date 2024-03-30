@@ -5,18 +5,20 @@ import Drivers from '../../../components/sections/Admin/Drivers/Drivers';
 import NewDriver from '../../../components/sections/Admin/Drivers/NewDriver';
 import CenteredContentPage from '../../../components/widget&items/Container/MyContainer';
 
-import AddEnfant from '../../../pages/AdminClient/Clients/NewEnfant';
+import AddEnfant from '../../../pages/AdminClient/Clients/NewParent';
 import ClientsPage from '../../../pages/AdminClient/Clients/ClientsPage';
 import MapPage from '../../../components/sections/Admin/Map/Map';
 import DriversPage from '../../../pages/AdminClient/Drivers/DriversPage';
 import AnnoncesPage from '../../../pages/Admin/Annonces/AnnoncesPage';
+import StudentsPage from '../../../pages/AdminClient/Clients/Students';
 
 function MainRoutes(props) {
     const components = [
         <ClientsPage />,
         <MapPage />,
         <DriversPage />,
-        <ClientsPage />,
+        <StudentsPage />,
+         <ClientsPage />,
          <AnnoncesPage />,
         <AnnoncesPage />,
 

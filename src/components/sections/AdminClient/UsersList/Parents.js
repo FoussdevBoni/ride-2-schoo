@@ -14,15 +14,18 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Avatar, Button } from '@mui/material';
+import CustomizedProgressBars from '../../../widget&items/Status/Status';
 import axios from 'axios';
 import { urlApi } from '../../../../Backend/apiUrl';
-
+import { AddCircle } from '@mui/icons-material';
+import MyModal from '../../../widget&items/MyModal/MyModal';
+import AddChildForm from '../../../../pages/AdminClient/Clients/NewChild';
 
 
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
-
+  const [openModal , setOpenModal] = React.useState(false)
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -42,17 +45,21 @@ function Row(props) {
           {row.nom}
         </TableCell>
         <TableCell align="right">
-              {row.phone}
+         { row.email}
         </TableCell>
         <TableCell align="right">
-           {row.email}
+           <CustomizedProgressBars /> 
         </TableCell>
-        <TableCell align="right">
-          En activité 
+         <TableCell align="right">
+          <Button color='primary' variant='outlined' style={{textTransform: 'none'}} onClick={()=>{
+              setOpenModal(true)
+          }}>
+             <AddCircle /> 
+          </Button>
         </TableCell>
         <TableCell align="right">
           <Button color='primary' variant='outlined' style={{textTransform: 'none'}}>
-             Suivre le trajet
+             suspendre 
           </Button>
         </TableCell>
       </TableRow>
@@ -61,7 +68,7 @@ function Row(props) {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
-                Enfants associés au chauffeur
+                Détails de l'enfant
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
@@ -75,18 +82,22 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history&&row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
+                  {row.enfant?.map((enfant) => (
+                    <TableRow key={enfant.nom}>
                       <TableCell component="th" scope="row">
                          <Avatar src={'https://www.shutterstock.com/image-photo/portrait-smiling-african-american-schoolboy-260nw-2326745069.jpg'} sizes='100'/>
                       </TableCell>
                       <TableCell component="th" scope="row">
-                         AMADOU
+                          {enfant.nom}
                       </TableCell>
-                      <TableCell>Adams</TableCell>
-                      <TableCell align="right">Yaoudé Centre</TableCell>
+                      <TableCell>
+                        {enfant.prenom}
+                      </TableCell>
                       <TableCell align="right">
-                        lmmmllk
+                       {enfant.ecole}
+                      </TableCell>
+                      <TableCell align="right">
+                         {row.adress}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -96,6 +107,9 @@ function Row(props) {
           </Collapse>
         </TableCell>
       </TableRow>
+      {
+        openModal&&(<MyModal children={<AddChildForm parent={row}/>}/>)
+      }
     </React.Fragment>
   );
 }
@@ -119,22 +133,24 @@ Row.propTypes = {
 };
 
 
-export default function Drivers() {
-   const [drivers , setDrivers ]= React.useState([])
+
+export default function Parents() {
+   const [parents , setParents ]= React.useState([])
    const userId = localStorage.getItem('userId')
-    const getDrivers= async ()=>{
+    const getParents= async ()=>{
           try {
-        const response = await axios.get(urlApi+'chauffeur/allChauffeurs')
+        const response = await axios.get(urlApi+'parent/allParents')
+
          console.log("Success:", response.data);
-          const  data =  response.data.filter(driver=>(driver.admin?._id===userId))
-          console.log(data)
-          setDrivers(data)
+
+          console.log( response.data)
+          setParents( response.data)
           } catch (error) {
           
         }
       }
    React.useEffect(()=>{
-     getDrivers()
+     getParents()
    } , [])
 
   return (
@@ -145,19 +161,21 @@ export default function Drivers() {
             <TableCell />
             <TableCell></TableCell>
             <TableCell align="right">Nom</TableCell>
-            <TableCell align="right">Numéro de téléphone</TableCell>
             <TableCell align="right">Email</TableCell>
-            <TableCell align="right">Statut</TableCell>
+            <TableCell align="right">Statut du contrat</TableCell>
             <TableCell align="right"></TableCell>
+             <TableCell align="right"></TableCell>
 
           </TableRow>
         </TableHead>
         <TableBody>
-          {drivers&&drivers.map((row) => (
-            <Row key={row.name} row={row} />
+          {parents.map((row) => (
+            <Row key={row.nom} row={row} />
           ))}
         </TableBody>
       </Table>
+
+      
     </TableContainer>
   );
 }

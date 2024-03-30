@@ -15,13 +15,14 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Avatar, Button } from '@mui/material';
 import CustomizedProgressBars from '../../../widget&items/Status/Status';
-import { parents } from '../../../../data/parents';
+import axios from 'axios';
+import { urlApi } from '../../../../Backend/apiUrl';
 
 
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
-
+    
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -71,7 +72,7 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.enfants.map((enfant) => (
+                  {row?.enfant?.map((enfant) => (
                     <TableRow key={enfant.nom}>
                       <TableCell component="th" scope="row">
                          <Avatar src={'https://www.shutterstock.com/image-photo/portrait-smiling-african-american-schoolboy-260nw-2326745069.jpg'} sizes='100'/>
@@ -120,7 +121,26 @@ Row.propTypes = {
 
 
 
-export default function Clients() {
+export default function StudentsList() {
+   const [parents , setParents ]= React.useState([])
+    function getChildById(id){
+      
+    }
+    const getParents= async ()=>{
+          try {
+        const response = await axios.get(urlApi+'parent/allParents')
+
+         console.log("Success:", response.data);
+
+          console.log( response.data)
+          setParents( response.data)
+          } catch (error) {
+          
+        }
+      }
+   React.useEffect(()=>{
+     getParents()
+   } , [])
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table"  sx={{ minWidth: window.innerWidth - 330 }}>
@@ -132,11 +152,12 @@ export default function Clients() {
             <TableCell align="right">Email</TableCell>
             <TableCell align="right">Statut du contrat</TableCell>
             <TableCell align="right"></TableCell>
+            <TableCell align="right"></TableCell>
 
           </TableRow>
         </TableHead>
         <TableBody>
-          {parents.map((row) => (
+          {parents&&parents.map((row) => (
             <Row key={row.nom} row={row} />
           ))}
         </TableBody>

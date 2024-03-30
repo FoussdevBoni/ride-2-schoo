@@ -17,10 +17,16 @@ export const menuItems = [
         icon: <People />
     },
      {
-        label: 'Les enfants enregistrés', 
+        label: 'Tous les enfants enregistrés', 
         route: 'admin-client/enfants',
         icon: <Group />
     },
+     {
+        label: 'Les abonnés', 
+        route: 'admin-client/abonnes',
+        icon: <Group />
+    },
+   
      {
         label: 'Annonces', 
         route: 'admin-client/annonces',

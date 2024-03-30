@@ -2,17 +2,18 @@ import { Box, Fab } from '@mui/material';
 import React from 'react';
 import { PersonAdd } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import Parents from '../../../components/sections/AdminClient/UsersList/Parents';
-function ClientsPage(props) {
+import StudentsList from '../../../components/sections/AdminClient/UsersList/Students';
+
+function StudentsPage(props) {
     const navigate = useNavigate()
 
     return (
         <Box>
               <h1 style={{textAlign: 'center', marginTop: 15}}>
-                Les parents enregistrés
+                Tous les enfants inscrits
             </h1>
             <br/><br/>
-            <Parents />
+            <StudentsList />
               <Fab
                variant="extended" size="medium"  sx={{
             position:'fixed' ,  bottom: '20px',  right: '20px'
@@ -20,10 +21,10 @@ function ClientsPage(props) {
                 navigate("/admin-client/ajouter-enfant")
               }}>
                 <PersonAdd sx={{ mr: 1 }} />
-               Ajouter un parent
+               Ajouter un enfant
            </Fab>
         </Box>
     );
 }
 
-export default ClientsPage;
+export default StudentsPage;

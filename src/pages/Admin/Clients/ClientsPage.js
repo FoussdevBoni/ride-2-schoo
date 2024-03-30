@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import React from 'react';
-import StudentList from '../../../components/sections/Admin/UsersList/ClientsList';
+import StudentsList from './../../../components/sections/AdminClient/UsersList/Students';
 
 function ClientsPage(props) {
     return (
@@ -9,7 +9,7 @@ function ClientsPage(props) {
                 Nos clients
             </h1>
             <br/><br/>
-            <StudentList />
+            <StudentsList />
         </Box>
     );
 }

@@ -8,7 +8,6 @@ function MyModal({user , children}) {
     const navigate = useNavigate()
     const handleCloseModal = ()=>{
         setOpen(false)
-         navigate(-1)
     }
     useEffect(()=>{
         setOpen(true)

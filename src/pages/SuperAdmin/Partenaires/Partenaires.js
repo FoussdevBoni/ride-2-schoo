@@ -76,16 +76,12 @@ export default function PartenairesPage() {
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Partenaire de flotte" {...a11yProps(0)} />
           <Tab label="Partenaire client ( Ecoles)" {...a11yProps(1)} />
-          <Tab label="Gestionnaires de bus scolaires" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <Partenaires rows={partenersFlotte}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <Partenaires rows={partenersClients}/>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
         <Partenaires rows={partenersClients}/>
       </CustomTabPanel>
     </Box>
