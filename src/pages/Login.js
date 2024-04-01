@@ -1,20 +1,20 @@
-import { Alert, Box, Button, Card, CircularProgress, Snackbar, TextField, Typography, colors } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { Alert, Box, Button, Card, CircularProgress, Snackbar, TextField, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+
 import axios from 'axios';
-import { urlApi } from '../../../Backend/apiUrl';
+import { urlApi } from '../Backend/apiUrl';
+import { useNavigate } from 'react-router-dom';
 
 
 
 
-function SuperAdminConnexion(props) {
+function AdminLogin(props) {
     const navigate = useNavigate()
      const [email , setEmail] = useState('')
       const [password , setPassWord] = useState('')
       const [open , setOpen ] = useState(false)
       const [submitting , setSubmitting] = useState(false)
-  // Définir les états pour les données de l'administrateur et les messages d'erreur
+  
   const adminData = {
     email: email,
     password: password,
@@ -22,7 +22,6 @@ function SuperAdminConnexion(props) {
   };
 
   const [errorMessage, setErrorMessage] = useState("");
-
   // Fonction pour gérer la soumission du formulaire
   const handleSubmit = async () => {
     setSubmitting(true)
@@ -32,13 +31,21 @@ function SuperAdminConnexion(props) {
       console.log("Success:", response.data);
       localStorage.setItem("userId", response.data.id)
      localStorage.setItem("role", response.data.role)
-       navigate('/super-admin ?admin_id='+response.data.id)
+     localStorage.setItem("token" , response.data.token)
+      
+      if (response.data.role===1) {
+             navigate('/admin?admin_id='+response.data.id)
+
+      }else if (response.data.role===2) {
+          navigate('/admin-client?admin_id='+response.data.id)
+
+      }
 
       setSubmitting(false)
     } catch (error) {
       if (error.response) {
         setErrorMessage(error.response.data.message);
-              setSubmitting(false)
+         setSubmitting(false)
       } else {
         setErrorMessage(error.message);
       }
@@ -105,19 +112,19 @@ useEffect(()=>{
           }
           </Button>
           <Button sx={{ flex: 1, marginLeft: '0.5rem' }} color='primary' variant='outlined'
-            onClick={()=>{navigate('/register/super-admin')}}
+            onClick={()=>{navigate('/')}}
           >
-            Créer un compte
+            Annuler
           </Button>
 
         </Box>
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
   <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-    Connexion échouée. Veillez réessayer
+    {errorMessage}
   </Alert>
 </Snackbar>
-</Card>
+           </Card>
     );
 }
 
-export default SuperAdminConnexion;
+export default AdminLogin;

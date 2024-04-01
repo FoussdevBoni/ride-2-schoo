@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 function CenteredContentPage({content}) {
   const styles = {
     root: {
-       display: 'flex',
+    display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -15,7 +15,7 @@ function CenteredContentPage({content}) {
 
   return (
     <div style={styles.root}>
-      <Container maxWidth="md">
+      <Container maxWidth="sm">
        {content}
       </Container>
     </div>

@@ -6,7 +6,7 @@ import SecondaryRoutes from './Routes/SecondaryRoutes';
 import { Routes } from 'react-router-dom';
 import { menuItems } from './menuItems';
 
-function AdminClient(props) {
+function AdminClient({user}) {
    useEffect(()=>{
    },[])
     const AdminRoutes = ()=>{
@@ -19,7 +19,7 @@ function AdminClient(props) {
     );
     }
 
-  return             <DashBord main={<AdminRoutes />} menuItems={menuItems}/>
+  return             <DashBord user={user} main={<AdminRoutes />} menuItems={menuItems}/>
 
 
 }

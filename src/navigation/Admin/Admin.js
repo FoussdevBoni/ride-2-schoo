@@ -6,7 +6,7 @@ import SecondaryRoutes from './Routes/SecondaryRoutes';
 import { Routes } from 'react-router-dom';
 import { menuItems } from './menuItems';
 
-function Admin(props) {
+function Admin({user}) {
     const [hasReloaded, setHasReloaded] = useState(false);
 
     useEffect(() => {
@@ -20,7 +20,7 @@ function Admin(props) {
     }, [hasReloaded]);
 
     return (
-        <DashBord main={
+        <DashBord user={user} main={
             <Box>
                 <SecondaryRoutes />
                 <MainRoutes />

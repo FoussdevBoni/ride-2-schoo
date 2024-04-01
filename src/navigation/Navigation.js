@@ -6,6 +6,8 @@ import Visitor from './Visitor/Visitor';
 import SuperAdmin from './SuperAdmin/SuperAdmin';
 import AdminClient from './AdminClient/Admin';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { urlApi } from '../Backend/apiUrl';
 
 function Navigation(props) {
     const userId = localStorage.getItem('userId')
@@ -14,9 +16,24 @@ function Navigation(props) {
     const [isSupAdmin , setIsSupAdmin ]= useState(false)
     const [isAdmin , setIsAdmin] = useState(false)
     const [isAdminClient , setIsAdminClient] = useState(false)
-    const firstUrlSeg = getUrlSegment(1)
     const navigate =useNavigate()
+       const [user , setUser] = useState()
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+     const getAdmins= async ()=>{
+          try {
+        const response = await axios.get(urlApi+'admin/allAdmin')
+         console.log("Success:", response.data);
+          const admin = response.data?.filter(admin=>admin._id===userId)
+          console.log(admin)
+          setUser(admin[0])
+          } catch (error) {
+          
+        }
+      }
+     
     useEffect(()=>{
+               getAdmins()
+
       if (role===null) {
         setIsVisitor(true)
       }else if (role==='1') {
@@ -27,7 +44,7 @@ function Navigation(props) {
            setIsAdminClient(true)
       }
      
-    }, [navigate, role, userId])
+    }, [getAdmins, navigate, role, userId])
     return (
         <Box>
             {
@@ -38,19 +55,19 @@ function Navigation(props) {
             }
               {
                 isSupAdmin && <Box>
-                   <SuperAdmin />
+                   <SuperAdmin user={user} />
                 </Box>
 
             }
               {
                 isAdmin && <Box>
-                   <Admin />
+                   <Admin user={user}/>
                 </Box>
 
             }
              {
                 isAdminClient && <Box>
-                   <AdminClient />
+                   <AdminClient user={user}/>
                 </Box>
 
             }
