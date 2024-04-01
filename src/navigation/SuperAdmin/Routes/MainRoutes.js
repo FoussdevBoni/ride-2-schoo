@@ -12,12 +12,15 @@ import PartenairesPage from '../../../pages/SuperAdmin/Partenaires/Partenaires';
 import AddPartenaireFlotte from '../../../components/sections/SuperAdmin/AddPartenaireFlotte';
 import AddPartenerClient from '../../../components/sections/SuperAdmin/AddPartenerClient';
 import Contrats from '../../../pages/SuperAdmin/Contrats/Contrats';
+import Flottes from '../../../pages/SuperAdmin/Partenaires/Flotte';
+import Ecoles from '../../../pages/SuperAdmin/Partenaires/Ecoles';
 
 function MainRoutes(props) {
     const components = [
         <PartenairesPage />,
         <MapPage />,
-         <PartenairesPage />,
+        <Flottes />,
+        <Ecoles />,
         <Contrats />,
 
     ]

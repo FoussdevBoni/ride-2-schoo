@@ -17,7 +17,8 @@ import { useNavigate } from 'react-router-dom';
 export default function AdminAppbar({user}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+    const userId = localStorage.getItem('userId')
+  const role = localStorage.getItem('role')
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -160,7 +161,9 @@ export default function AdminAppbar({user}) {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton
+             {
+               ( user?.role===3||role===3)&&(
+                     <IconButton
               size="large"
               edge="end"
               aria-label="Ajouter"
@@ -171,6 +174,8 @@ export default function AdminAppbar({user}) {
             >
               <PersonAdd />
             </IconButton>
+                )
+             }
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton

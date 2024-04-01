@@ -1,4 +1,4 @@
-import { Bookmark, Group, Home, Notifications, People, Room, Warning } from "@mui/icons-material";
+import { Bookmark, Group, Home, LocalTaxi, Notifications, People, Room, School, TaxiAlert, Warning } from "@mui/icons-material";
 
 export const menuItems = [
     {
@@ -13,9 +13,14 @@ export const menuItems = [
     },
     
      {
-        label: 'Nos partenaires', 
-        route: 'super-admin/partenaires',
-        icon: <Group />
+        label: 'Nos partenaires de flotte', 
+        route: 'super-admin/partenaires-flotte',
+        icon: <LocalTaxi />
+    },
+    {
+        label: 'Ecoles partenaires', 
+        route: 'super-admin/ecoles',
+        icon: <School />
     },
      {
         label: 'Contrats', 
