@@ -1,0 +1,55 @@
+{
+  "expo": {
+    "name": "ride2-school",
+    "slug": "snack-65ad28d9-01bd-41c2-9051-59b35e55fb3a",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Rite to School to use your location"
+        }
+      ]
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCNJXjPNJI96OQs2Qfin46-Ow7sSeXx8nA"
+        }
+      },
+      "bundleIdentifier": "com.adamsdev237.snack65ad28d901bd41c2905159b35e55fb3a"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff",
+        "config": {
+          "googleMaps": {
+            "apiKey": "AIzaSyCNJXjPNJI96OQs2Qfin46-Ow7sSeXx8nA"
+          }
+        }
+      },
+      "package": "com.adamsdev237.snack65ad28d901bd41c2905159b35e55fb3a"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ac751faf-3ff5-440e-9d1f-60657d25d955"
+      }
+    }
+  }
+}
