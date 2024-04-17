@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../../../../assets/styles/colors';
 
-const TabAppBar = ({group}) => {
+const TabAppBar = ({user}) => {
 
 
   const navigation = useNavigation();
@@ -20,7 +20,7 @@ const TabAppBar = ({group}) => {
   };
 
   // Remplacez 'groupName' par le nom de l'utilisateur
-  const groupName = 'BONI Idrissou';
+  const groupName = user?.nom;
 
   // Obtenez la première lettre du nom de l'utilisateur
   const avatarInitial = groupName?.charAt(0).toUpperCase();

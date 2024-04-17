@@ -11,6 +11,7 @@ import {SignUpScreen1 , SignUpScreen2} from '../screens/SignUpScreen';
 import SignInScreen from '../screens/SignInSreen';
 import StepOne from '../components/particular/SignUp/StepOne';
 import HomeScreen from '../screens/Visitor/HomeScreen';
+import StepTwo from '../components/particular/SignUp/StepTwo';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -54,6 +55,8 @@ const Visitor = () => {
            }} />
         {/* <Stack.Screen name="Créer un compte/Etape2" component={SignUpScreen2} options={{ headerShown: false }} /> */}
         <Stack.Screen name="Se connecter" component={SignInScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="step2" component={StepTwo} options={{ headerShown: false }} />
+          
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -19,6 +19,10 @@ import ProfileScreen from '../screens/User/ProfileScreeen';
 import FlottesScreen from '../screens/User/FlottesScreen';
 import FlotteScreen from '../screens/User/FlotteScreen';
 import CarsListScreen from '../screens/User/CarsListScreen';
+import { useSelector } from 'react-redux';
+import ChildForm from '../screens/User/AddChild/ChildForm';
+import ChoixPreferenceForm from '../screens/User/AddChild/ChoixPreferenceForm';
+import ConfigResults from '../screens/User/AddChild/IteConfig';
 
 
 
@@ -97,8 +101,9 @@ const getGestureDirection = (route, navigation) => {
 };
 
 
-const User = ({user}) => {
+const User = () => {
     const navigationRef = useRef(null);
+  const user = useSelector(state => state.currentUser.user)
 
   return (
  <View style={{flex: 1}}>
@@ -125,6 +130,15 @@ const User = ({user}) => {
         </Stack.Screen>
          <Stack.Screen name="all-cars" options={{ headerShown: false }}>
               {props=><CarsListScreen {...props} user={user} />}
+        </Stack.Screen>
+         <Stack.Screen name="add-child" options={{ headerShown: false }}>
+              {props=><ChildForm {...props} user={user} />}
+        </Stack.Screen>
+         <Stack.Screen name="choix-preferences" options={{ headerShown: false }}>
+              {props=><ChoixPreferenceForm {...props} user={user} />}
+        </Stack.Screen>
+          <Stack.Screen name="itineraire-config" options={{ headerShown: false }}>
+              {props=><ConfigResults {...props} user={user} />}
         </Stack.Screen>
    </Stack.Navigator>
     </NavigationContainer>

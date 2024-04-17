@@ -1,98 +1,153 @@
-import React  , {useState , useContext} from 'react';
-import { View, StyleSheet, ScrollView, Text } from 'react-native';
+import * as React from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
+import FAIcon from 'react-native-vector-icons/FontAwesome'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { useSelector, useDispatch } from 'react-redux';
+import { useState, } from 'react';
+import axios from 'axios';
+import { createParent } from '../../../utils/api';
+import { isConected, login } from '../../../redurcer/userSlice';
 import { colors } from '../../../assets/styles/colors';
-import MyContext from '../../../contextes/appContext'
 
 const StepTwo = () => {
-    const {globalState , setGlobalState} = useContext(MyContext)
+  const navigation  = useNavigation()
+  const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(false)
+  const [user, setUser] = useState({})
+  const [error, setError] = useState('')
+  const route = useRoute()
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [idNumber, setIdNumber] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const {cni , phone , nom} = route.params
 
-const handleRegistration = () => {
-    console.log('Prénom:', firstName);
-    console.log('Nom:', lastName);
-    console.log('Adresse Mail:', email);
-    console.log('Numéro de CNI:', idNumber);
-    console.log('Numéro de téléphone:', phoneNumber);
-    console.log('Quartier de résidence:', address);
-    console.log('Ville de résidence:', city);
-    console.log('Mot de passe:', password);
-    console.log('Confirmer le mot de passe:', confirmPassword);
-    setGlobalState(prevState => ({
-              ...prevState,
-              connecting: true
-       }))
+  const handleChange = (key, value) => {
+    setUser({
+      ...user, [key]: value,
+      cni,
+      phone,
+      nom
+    })
+  }
 
-       setTimeout(()=>{
-          setGlobalState(prevState => ({
-              ...prevState,
-              connected: true
-       }))
-       } , 3000)
+  const handleLogin = async () => {
+    setIsLoading(true)
+    alert('hhhh')
+ 
+      try {
+        const {data} = await axios.post(createParent, user)
+        console.log(data);
+        dispatch(login(data))
+        dispatch(isConected())
+        setIsLoading(false)
+      } catch (err) {
+        alert('la créetion de compte échouée')
+        console.log(err);
+        setIsLoading(false)
+      }
+      
   };
+
   return (
-    <ScrollView style={styles.container}>
-      <TextInput
-        label="Quartier de résidence"
-        value={address}
-        onChangeText={text => setAddress(text)}
-        style={styles.input}
-      />
-      <TextInput
-        label="Ville de résidence"
-        value={city}
-        onChangeText={text => setCity(text)}
-        style={styles.input}
-      />
-      <TextInput
-        label="Créer un mot de passe"
-        value={password}
-        secureTextEntry
-        onChangeText={text => setPassword(text)}
-        style={styles.input}
-      />
-      <TextInput
-        label="Confirmer le mot de passe"
-        value={confirmPassword}
-        secureTextEntry
-        onChangeText={text => setConfirmPassword(text)}
-        style={styles.input}
-      />
-     
-        
-        <Button mode="contained" onPress={handleRegistration} style={styles.button}>
-          <Text style={{ color: 'white' }}>
-            Créer mon compte
-          </Text>
-        </Button>
-    </ScrollView>
+    <View style={styles.space}>
+      <View style={styles.navBar}>
+        <TouchableOpacity style={styles.navbarGoBack} onPress={() => navigation.goBack()}>
+          <FAIcon
+            style={{ fontSize: hp("4%") }}
+            color={"white"}
+            name={'angle-left'} />
+        </TouchableOpacity>
+        <Text style={styles.navBarTest}>Créer un compte(2/2)</Text>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.textError} >{error}</Text>  
+         <TextInput
+          label="Votre adresse e-mail"
+          onChangeText={(text) => handleChange('email', text)}
+          style={styles.input}
+        />
+        <TextInput
+          label="Créer un mot  de passe"
+          secureTextEntry
+          onChangeText={(text) => handleChange('password', text)}
+          style={styles.input}
+        />
+         <TextInput
+          label="Confirmer le mot  de passe"
+          secureTextEntry
+          onChangeText={(text) => handleChange('password', text)}
+          style={styles.input}
+        />
+        <TouchableOpacity mode="contained" onPress={handleLogin} style={styles.button}>
+          {isLoading ? <ActivityIndicator size="large" color="white" /> :
+            <Text style={{ color: 'white' }}>
+              Se connecter
+            </Text>
+          }
+
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  space: {
+    flex: 1
+  },
   container: {
     flex: 1,
+    justifyContent: 'center',
     padding: 20,
+  },
+  navbarGoBack: {
+    marginTop: 10,
+    marginLeft: 20
+  },
+  navbarGoBackText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  navBarTest: {
+    color: 'white',
+    marginTop: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginRight: 95
+  },
+  navBar: {
+    zIndex: 999,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    padding: 10,
+    flexDirection: 'row',
+    backgroundColor: colors.primary,
+    height: 100,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  textError: {
+    color: 'red',
+    textAlign: 'center',
+    fontSize: 15
   },
   input: {
     marginVertical: 5,
   },
   button: {
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 5,
     marginVertical: 10,
     backgroundColor: colors.primary
-  },
-  buttonGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+
   },
 });
 
