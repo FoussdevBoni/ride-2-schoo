@@ -1,148 +1,133 @@
-import React, { useState } from 'react';
-import { View, Button, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Button, StyleSheet, Text, Dimensions } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import axios from 'axios';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
 import { colors } from '../../../assets/styles/colors';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { TouchableOpacity } from 'react-native';
 import StackAppBarr from '../../../components/sections/User/Appbars/StackAppBar';
+import SearchMap from '../../../components/sections/User/IteConfig/Map';
+        const API_KEY = 'AIzaSyCNJXjPNJI96OQs2Qfin46-Ow7sSeXx8nA';
 
-const ConfigResults = ({user}) => {
-    const route = useRoute()
+const ConfigResults = ({ user }) => {
+    const route = useRoute();
     const [origin, setOrigin] = useState(null);
     const [destination, setDestination] = useState(null);
-    const [directions, setDirections] = useState([]);
-    const [heureDebut, setHeureDebut] = useState('');
-   const [heureFin, setHeureFin] = useState('');
-    const handleSearch = () => {
-    if (!origin || !destination) {
-      alert("Veuillez sélectionner un lieu de départ et un lieu d'arrivée.");
-      return;
-    }
-
-    const API_KEY = 'AIzaSyCNJXjPNJI96OQs2Qfin46-Ow7sSeXx8nA';
-    const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&key=${API_KEY}`;
-
-    axios
-      .get(url)
-      .then(response => {
-        const routes = response.data.routes;
-        if (routes && routes.length > 0) {
-          const route = routes[0];
-          const { legs } = route;
-          if (legs && legs.length > 0) {
-            const steps = legs[0].steps;
-            if (steps && steps.length > 0) {
-              const coordinates = steps.map(step => ({
-                latitude: step.start_location.lat,
-                longitude: step.start_location.lng,
-              }));
-              coordinates.push({
-                latitude: steps[steps.length - 1].end_location.lat,
-                longitude: steps[steps.length - 1].end_location.lng,
-              });
-              setDirections(coordinates);
-            }
-          }
+    const [originLocation, setOriginLocation] = useState(null);
+    const [destinationLocation, setDestinationLocation] = useState(null);
+    const navigation  = useNavigation()
+    const handleSearch = async () => {
+        if (!origin || !destination) {
+            alert("Veuillez sélectionner un lieu de départ et un lieu d'arrivée.");
+            return;
+        }1
+try {
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/directions/json`, {
+        params: {
+          origin,
+          destination,
+          key: API_KEY
         }
-      })
-      .catch(error => {
-        console.error("Erreur lors de la récupération de l'itinéraire:", error);
       });
+
+      if (response.data.status === 'OK') {
+        const routes = response.data.routes[0];
+        const legs = routes.legs[0];
+        setOriginLocation(legs.start_location);
+        setDestinationLocation(legs.end_location);
+        navigation.navigate('ite-config-map' , {destination: legs.end_location  , origin: legs.start_location})
+        console.log(legs.start_location)
+      } else {
+        console.error('Erreur dans la réponse de l\'API:', response.data.status);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la requête:', error);
+    }
   };
 
-  return (
-    <View style={styles.container}>
-      <StackAppBarr title={"Calcul de l’itinéraire"} />
-      <View style={styles.searchContainer}>
-        <GooglePlacesAutocomplete
-          placeholder="Lieu de départ"
-          onPress={(data, details = null) => {
-            setOrigin(data.description);
-          }}
-          query={{
-            key: 'AIzaSyCNJXjPNJI96OQs2Qfin46-Ow7sSeXx8nA',
-            language: 'fr',
-          }}
-        />
-        <GooglePlacesAutocomplete
-          placeholder="Lieu d'arrivée"
-          onPress={(data, details = null) => {
-            setDestination(data.description);
-          }}
-          query={{
-            key: 'AIzaSyCNJXjPNJI96OQs2Qfin46-Ow7sSeXx8nA',
-            language: 'fr',
-          }}
-        />
-          <TouchableOpacity  onPress={()=>handleSearch()} style={[styles.button, {height:40, justifyContent:'center'}]} >
-          <Text style={{ color: 'white', textAlign:'center' }}>
-            Suivant
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.mapContainer}>
-        <MapView style={styles.map}>
-          {origin && (
-            <Marker
-              coordinate={{
-                latitude: origin.details.geometry.location.lat,
-                longitude: origin.details.geometry.location.lng,
-              }}
-              title="Départ"
-            />
-          )}
-          {destination && (
-            <Marker
-              coordinate={{
-                latitude: destination.details.geometry.location.lat,
-                longitude: destination.details.geometry.location.lng,
-              }}
-              title="Arrivée"
-            />
-          )}
-          {directions && directions.length > 0 && (
-            <Polyline
-              coordinates={directions}
-              strokeColor="#3498db"
-              strokeWidth={4}
-            />
-          )}
-        </MapView>
-      </View>
-    </View>
-  );
+  
+
+    return (
+        <View style={styles.container}>
+            <StackAppBarr title={"Calcul de l’itinéraire"} />
+            <View style={styles.searchContainer}>
+                <View style={styles.searchInputs}>
+                    <View style={{ flex: 1, width: '40%' }}>
+                        <GooglePlacesAutocomplete
+                            placeholder='Lieu de ramassage'
+                            onPress={(data, details = null) => {
+                                setOrigin(data.description);
+                                 console.log(data.description);
+
+                            }}
+                            query={{
+                                key: API_KEY,
+                                language: 'fr',
+                            }}
+                        />
+                    </View>
+                    <View style={{ flex: 1, width: '40%', marginLeft: 10 }}>
+                        <GooglePlacesAutocomplete
+                            placeholder="Lieu de l'école"
+                            onPress={(data, details = null) => {
+                                setDestination(data.description);
+                                 console.log(data, details);
+
+                            }}
+                            query={{
+                                key: API_KEY,
+                                language: 'fr',
+                            }}
+                        />
+                    </View>
+                </View>
+            </View>
+          
+            <TouchableOpacity onPress={handleSearch} style={[styles.button, { height: 40, justifyContent: 'center' }]} >
+                <Text style={{ color: 'white', textAlign: 'center' }}>
+                    Rechercher
+                </Text>
+            </TouchableOpacity>
+        </View>
+    );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  searchContainer: {
-    padding: 10,
-    flex: 0.5
-  },
-  mapContainer: {
-    flex: 0.5,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  
-  input: {
-    width: '100%',
-    marginBottom: 20,
-  },
-    button: {
-    marginVertical: 10,
-    backgroundColor: colors.primary,
-        color: 'white'
+const { width, height } = Dimensions.get('screen');
 
-  },
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    searchInputs: {
+        padding: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        flex: 1
+    },
+    searchContainer: {
+        padding: 10,
+        height: height * 0.75
+    },
+    mapContainer: {
+        flex: 0.5,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
+    },
+    input: {
+        width: '100%',
+        marginBottom: 20,
+    },
+    button: {
+        marginVertical: 10,
+        backgroundColor: colors.primary,
+        color: 'white'
+    },
 });
 
 export default ConfigResults;
