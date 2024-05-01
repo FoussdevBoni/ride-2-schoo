@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { UseSelector, useSelector } from 'react-redux';
 import profileStyle from '../../assets/styles/css/profile';
 import StackAppBarr from '../../components/sections/User/Appbars/StackAppBar';
+import { logout } from '../../redurcer/userSlice';
 
 const ProfileScreen = ({navigation}) => {
   const currentUser = useSelector(state => state.currentUser.user)
@@ -97,7 +98,9 @@ const ProfileScreen = ({navigation}) => {
             />
           </TouchableOpacity>
           <Divider />
-          <TouchableOpacity onPress={() => handlePress('Se déconnecter')}>
+          <TouchableOpacity onPress={() => {
+            logout()
+          }}>
             <List.Item
               title="Se déconnecter"
               left={() => <List.Icon icon="logout" />}

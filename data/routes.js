@@ -8,7 +8,7 @@ export const items = [
     headerShow: false
 },
 {
-    icon:'map',
+    icon:'location',
     name:'R2S',
     route: 'Suivre mes Enfants',
     headerShow: false

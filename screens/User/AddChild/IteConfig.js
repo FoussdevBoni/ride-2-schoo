@@ -18,6 +18,8 @@ const ConfigResults = ({ user }) => {
     const [originLocation, setOriginLocation] = useState(null);
     const [destinationLocation, setDestinationLocation] = useState(null);
     const navigation  = useNavigation()
+    const {child}= route.params
+      console.log(child)
     const handleSearch = async () => {
         if (!origin || !destination) {
             alert("Veuillez sélectionner un lieu de départ et un lieu d'arrivée.");
@@ -37,7 +39,7 @@ try {
         const legs = routes.legs[0];
         setOriginLocation(legs.start_location);
         setDestinationLocation(legs.end_location);
-        navigation.navigate('ite-config-map' , {destination: legs.end_location  , origin: legs.start_location})
+        navigation.navigate('ite-config-map' , {child: child, destination: legs.end_location  , origin: legs.start_location})
         console.log(legs.start_location)
       } else {
         console.error('Erreur dans la réponse de l\'API:', response.data.status);

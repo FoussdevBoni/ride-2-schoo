@@ -4,7 +4,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { get, getDatabase, ref, set } from "firebase/database";
 import { getStorage } from 'firebase/storage';
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyBZ9sJZeji6lYLbvkstmJLFkss7bI1Uhc8",
   authDomain: "ride-2-school.firebaseapp.com",
   databaseURL: "https://ride-2-school-default-rtdb.firebaseio.com",

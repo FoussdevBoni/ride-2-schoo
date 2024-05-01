@@ -1,11 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { List, Title } from 'react-native-paper';
 import { getPrice } from '../../../functions/getPrice';
+import { addChild } from '../../../utils/api';
+import { colors } from '../../../assets/styles/colors';
+import axios from 'axios';
 
 
 const haversineDistance = (lat1, lon1, lat2, lon2) => {
@@ -26,10 +29,13 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
     return (angle * Math.PI) / 180;
   };
 
-const MapRoutes = () => {
+const MapRoutes = ({user}) => {
   const [route, setRoute] = useState([]);
+  const [isLoading , setIsLoading] = useState(false)
+
   const navRoutes  = useRoute()
-  const { origin, destination } = navRoutes.params
+  const { origin, destination , child } = navRoutes.params
+
   const [distance , setDistance] = useState(0)
   const originLocation = { latitude: origin?.lat ?? 0, longitude: origin?.lng ?? 0 };
   const destinationLocation = { latitude: destination?.lat ?? 0, longitude: destination?.lng ?? 0 };
@@ -68,6 +74,31 @@ const [strokeWidth , setstrokeWidth] = useState(4)
     longitudeDelta: 0.0421
   };
 
+  const suscribe =async ()=>{
+      const childData = {
+        ...child,
+        ramassage: [
+          originLocation.latitude,
+          originLocation.longitude
+        ],
+        lieudepot: [
+          destinationLocation.latitude,
+          destinationLocation.longitude
+        ]
+      }
+         setIsLoading(true)
+        console.log(childData)
+  try {
+        const {data} = await axios.post(addChild+user?._id, childData)
+        console.log(data);
+        setIsLoading(false)
+      } catch (err) {
+        alert("Ajout de l'enfant échoué")
+        setIsLoading(false)
+        console.log(err)
+      }
+  }
+
 return (
     <View style={styles.container}>
       <MapView style={styles.map} initialRegion={mapRegion}
@@ -99,7 +130,8 @@ return (
           image={require('../../../assets/images/icon-school.png')}
 
          />
-            <MapViewDirections
+
+        <MapViewDirections
             origin={originLocation}
             destination={destinationLocation}
             apikey={'AIzaSyCNJXjPNJI96OQs2Qfin46-Ow7sSeXx8nA'}
@@ -123,6 +155,11 @@ return (
         )} description={getPrice(distance)+'  F CFA'}/>
 
       </List.Section>
+         <TouchableOpacity  onPress={()=>{suscribe()}} style={[styles.button, {height:40, justifyContent:'center'}]} >
+          <Text style={{ color: 'white', textAlign:'center' , textTransform: 'none' }}>
+            Souscrire 
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -145,7 +182,13 @@ const styles = StyleSheet.create({
   dataContainer:{
     height: height,
     width: width,
-  }
+  },
+   button: {
+    marginVertical: 10,
+    backgroundColor: colors.primary,
+    color: 'white',
+    marginBottom:50
+  },
 });
 
 

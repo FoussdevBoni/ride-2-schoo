@@ -136,6 +136,7 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
           image={require('../../assets/images/icon-school.png')}
 
          />
+         
         { route.length >0 && <Polyline coordinates={route}  strokeWidth={strokeWidth} 
         strokeColor= {'red'} />}
       </MapView>

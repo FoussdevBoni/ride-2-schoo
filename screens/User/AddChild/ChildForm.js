@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from '@react-native-picker/picker'; 
@@ -8,48 +8,34 @@ import { useDispatch } from 'react-redux';
 import { colors } from '../../../assets/styles/colors';
 import StackAppBarr from '../../../components/sections/User/Appbars/StackAppBar';
 import { getSchoolsFromAdmins } from '../../../functions/getShools';
-const defautlSchools = [
-  { label: "Quelle est l'école de l'enfant", value: '' },
+import { takePhoto } from '../../../functions/uploadPhoto';
 
-  { label: 'École Publique de Bastos', value: 'Ecole Publique de Bastos' },
-  { label: 'Collège Bilingue de Biyem-Assi', value: 'Collège Bilingue de Biyem-Assi' },
-  { label: 'Lycée de Ngoa-Ekellé', value: 'Lycée de Ngoa-Ekellé' },
-];
-const ChildForm = () => {
+const ChildForm = ({user}) => {
   const [school, setSchool] = useState('');
-  const [schools , setSchools] = useState(defautlSchools)
+  const [schools , setSchools] = useState([])
   const navigation = useNavigation()
+  const [permission, requestPermission] = ImagePicker.useCameraPermissions();
 
-  const dispatch = useDispatch()
 
   const [child, setChild] = useState({
-    nom: '',
-    prenom: '',
-    school: '',
-    year: '',
-    lieu: '',
-    gradle: '',
-    photo: '',
-    imatriculation: 'cm237',
-    driver: 'Adams'
+   abonnement: 'dfdfdfdfdfdfdfdf',
+   ecole: '',
+   photo: 'mmmmm'
   });
 
 
   const handleChoosePhoto = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
+   
+          if (permission?.status !== ImagePicker.PermissionStatus.GRANTED) {
+            requestPermission()
+          }else{
+            const { uploadResp } = await   takePhoto('library', 'children' , user?._id) 
 
-    if (!result.canceled) {
-      setChild({
-        ...child,
-        photo: result.uri
-      })
-      console.log(result);
-    } else {
-      alert('You did not select any image.');
-    }
+            setChild({
+              ...child,
+              photo: uploadResp?.downloadUrl
+            })
+          }
   };
 
   const handleChange = (key, value) => {
@@ -63,12 +49,14 @@ const ChildForm = () => {
 
 
   const handleNext = () => {
-    navigation.navigate('choix-preferences' , child)
+    console.log(child)
+    navigation.navigate('itineraire-config' , {child})
   };
 
   async function fetchSchools() {
     try {
         const schools = await getSchoolsFromAdmins();
+        console.log(schools)
         setSchools(schools); // Faire quelque chose avec les écoles récupérées
     } catch (error) {
         // Gérer les erreurs
@@ -76,52 +64,67 @@ const ChildForm = () => {
     }
 }
 
+useEffect(()=>{
+  fetchSchools()
+  console.log('')
+  
+}, [])
+
   return (
    <View style={{flex: 1}}>
     <StackAppBarr  title={'Ajouter un enfant'} goBack={navigation.goBack}/>
-    <ScrollView style={styles.container}>
+     {
+      schools.length>0 ?( <ScrollView style={styles.container}>
       <View style={styles.selected}>
         <Picker
           label="École de l'enfant"
           value={school}
-          onValueChange={(itemValue) => handleChange('school', itemValue)}
+          onValueChange={(itemValue) => handleChange('ecole', itemValue?._id)}
           style={styles.selected}
         >
-          {schools.map((school, index) => (
-            <Picker.Item key={index} label={school.label} value={school.value} />
+          {schools?.map((school, index) => (
+            <Picker.Item  key={index} label={school.nomEcole} value={school} />
           ))}
         </Picker>
       </View>
       <TextInput
-        label="Nom(s)"
+        label="Nom et prénom(s)"
         onChangeText={text => handleChange('nom', text)}
         style={styles.input}
       />
       <TextInput
-        label="Prenom(s)"
-        onChangeText={text => handleChange('prenom', text)}
+        label="email"
+        onChangeText={text => handleChange('email', text)}
         style={styles.input}
       />
       <TextInput
-        label="Niveau scolaire"
-        onChangeText={text => handleChange('gradle', text)}
+        label="Classe de l'enfant"
+        onChangeText={text => handleChange('class', text)}
         style={styles.input}
       />
       <TextInput
-        label="âge"
-        onChangeText={text => handleChange('year', text)}
+        label="Date de naissance"
+        onChangeText={text => handleChange('dateNaissance', text)}
         style={styles.input}
       />
       <TextInput
-        label="Lieu D’habitation"
-        onChangeText={text => handleChange('lieu', text)}
+        label="Heures de sortie"
+        onChangeText={text => handleChange('heureSortie', text)}
         style={styles.input}
       />
-      <Button mode="contained" onPress={handleChoosePhoto} style={[styles.button, styles.input]}>
-        <Text style={{ color: 'white',  textTransform: 'none' }}>
-          Ajouter  une photo
-        </Text>
-      </Button>
+       <TextInput
+        label="Heures de départ"
+        onChangeText={text => handleChange('heureDepart', text)}
+        style={styles.input}
+      />
+      <TouchableOpacity mode="contained" onPress={()=>{
+        handleChoosePhoto()
+       }} style={[styles.button, {height:40, justifyContent:'center'}]}>
+          {
+             child?.photo!=="" ?  <Text style={{ color: 'white', textAlign:'center' , textTransform: 'none' }}>          Ajouter  une photo
+        </Text>: <ActivityIndicator color='white'  style={{ color: 'white', textAlign:'center' , textTransform: 'none' }} size={20}/>
+          }
+      </TouchableOpacity>
      
         <TouchableOpacity  onPress={()=>{handleNext()}} style={[styles.button, {height:40, justifyContent:'center'}]} >
           <Text style={{ color: 'white', textAlign:'center' , textTransform: 'none' }}>
@@ -130,7 +133,10 @@ const ChildForm = () => {
         </TouchableOpacity>
       
 
-    </ScrollView>
+    </ScrollView>): <View style={{flex: 1 , justifyContent: 'center' , alignItems: 'center'}}>
+        <ActivityIndicator color={colors.primary} size={50}/>
+    </View>
+     }
    </View>
   );
 };

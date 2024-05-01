@@ -96,7 +96,9 @@ const Profile = ({navigation}) => {
             />
           </TouchableOpacity>
           <Divider />
-          <TouchableOpacity onPress={() => handlePress('Se déconnecter')}>
+          <TouchableOpacity  onPress={() => {
+            logout()
+          }}>
             <List.Item
               title="Se déconnecter"
               left={() => <List.Icon icon="logout" />}

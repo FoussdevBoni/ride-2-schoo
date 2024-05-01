@@ -81,7 +81,7 @@ const StepTwo = () => {
         <TouchableOpacity mode="contained" onPress={handleLogin} style={styles.button}>
           {isLoading ? <ActivityIndicator size="large" color="white" /> :
             <Text style={{ color: 'white' }}>
-              Se connecter
+              S'inscrire
             </Text>
           }
 

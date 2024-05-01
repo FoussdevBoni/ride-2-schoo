@@ -27,7 +27,7 @@ const Navigation = ()=>{
    console.log(currentUser.conected);
      if(!currentUser.conected){
         return (
-       <Visitor />
+          <Visitor />
         )
      }else{
         return (

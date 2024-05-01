@@ -1,16 +1,13 @@
 import axios from 'axios';
-import { getAdmins } from '../utils/api';
+import { getSchools } from './../utils/api';
 
 export async function getSchoolsFromAdmins() {
     try {
-        const response = await axios.get(getAdmins);
-        const adminsData = response.data;
+        const response = await axios.get(getSchools);
+        const schoolsData = response.data;
 
-        if (adminsData && adminsData.admins) {
-            const admins = adminsData.admins;
-            console.log(admins)
-            const schools = admins.filter(admin => admin.role === 2);
-            return schools;
+        if (schoolsData) {
+            return schoolsData;
         } else {
             throw new Error("Impossible de récupérer les données des administrateurs.");
         }

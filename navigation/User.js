@@ -24,6 +24,8 @@ import ChildForm from '../screens/User/AddChild/ChildForm';
 import ChoixPreferenceForm from '../screens/User/AddChild/ChoixPreferenceForm';
 import ConfigResults from '../screens/User/AddChild/IteConfig';
 import MapRoutes from '../screens/User/AddChild/IteConfigMap';
+import Menu from '../screens/User/Menu';
+import MealsList from '../screens/Cantine/Menu';
 
 
 
@@ -40,7 +42,7 @@ const TabNavigator = ({user}) => {
     <R2SScreen user={user}/>,
     <ChildrenScreen user={user} />,
     <ContratScreen user={user} />,
-
+    <Menu user={user}/>
 
   ]
 
@@ -144,6 +146,10 @@ const User = () => {
           <Stack.Screen name="ite-config-map" options={{ headerShown: false }}>
               {props=><MapRoutes {...props} user={user} />}
         </Stack.Screen>
+         <Stack.Screen name="repas-cantine" options={{ headerShown: false }}>
+              {props=><MealsList {...props} user={user} />}
+        </Stack.Screen>
+         
    </Stack.Navigator>
     </NavigationContainer>
  </View>
