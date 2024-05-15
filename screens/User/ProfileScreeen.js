@@ -3,20 +3,26 @@ import { View, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { Avatar, Button, List, Divider, IconButton, Appbar } from 'react-native-paper';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { UseSelector, useSelector } from 'react-redux';
+import { UseSelector, useDispatch, useSelector } from 'react-redux';
 import profileStyle from '../../assets/styles/css/profile';
 import StackAppBarr from '../../components/sections/User/Appbars/StackAppBar';
 import { logout } from '../../redurcer/userSlice';
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = ({navigation , }) => {
   const currentUser = useSelector(state => state.currentUser.user)
-  
+  const dispatch = useDispatch()
   const handlePress = (item) => {
     console.log(`Vous avez cliqué sur ${item}`);
   };
+
+  const logOut = ()=>{
+    dispatch(logout())
+  }
   useEffect(() => {
 
   }, [])
+
+
   const changePage = (value) =>{
     navigation.navigate(value)
   }
@@ -40,7 +46,7 @@ const ProfileScreen = ({navigation}) => {
 
         {/* Numéro de téléphone et bouton "Modifier" */}
         <View style={profileStyle.contactContainer}>
-          <Text style={profileStyle.phoneNumber}>{currentUser.telephone}</Text>
+          <Text style={profileStyle.phoneNumber}>{currentUser.phone}</Text>
           <TouchableOpacity style={profileStyle.editButton} onPress={()=> changePage('updateProfile')}>
             <Text style={{ color: 'white' }}>Modifier</Text>
           </TouchableOpacity>
@@ -99,7 +105,7 @@ const ProfileScreen = ({navigation}) => {
           </TouchableOpacity>
           <Divider />
           <TouchableOpacity onPress={() => {
-            logout()
+            logOut()        
           }}>
             <List.Item
               title="Se déconnecter"

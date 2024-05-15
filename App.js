@@ -10,6 +10,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import sendRandomPushNotification from './functions/getnotifications';
 import PushNotifications from './components/PushNotif/PushNotif';
+import { NativeBaseProvider, Text, Box } from "native-base";
 
 
 const theme = {
@@ -42,6 +43,7 @@ useEffect(()=>{
   
 },[])
   return (
+<NativeBaseProvider>
  <PaperProvider theme={theme}>
  <GestureHandlerRootView style={{ flex: 1 ,backgroundColor: '#ECF0F1' }}>
    <Provider store={store}>
@@ -51,6 +53,7 @@ useEffect(()=>{
    </Provider>
    </GestureHandlerRootView>
   </PaperProvider>
+    </NativeBaseProvider>
 
   );
 }

@@ -32,12 +32,16 @@ const StepTwo = () => {
 
   const handleLogin = async () => {
     setIsLoading(true)
-    alert('hhhh')
  
       try {
         const {data} = await axios.post(createParent, user)
         console.log(data);
-        dispatch(login(data))
+        const userData = {
+          ...data,
+          id: data._id
+        }
+
+        dispatch(login(userData))
         dispatch(isConected())
         setIsLoading(false)
       } catch (err) {

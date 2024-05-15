@@ -34,7 +34,7 @@ function HomeScreen({user}) {
         </TouchableOpacity>
       </View>
 
-      <Children />
+      <Children user={user}/>
 
     </ScrollView>
   );

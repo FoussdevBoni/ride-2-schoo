@@ -77,19 +77,14 @@ const [strokeWidth , setstrokeWidth] = useState(4)
   const suscribe =async ()=>{
       const childData = {
         ...child,
-        ramassage: [
-          originLocation.latitude,
-          originLocation.longitude
-        ],
-        lieudepot: [
-          destinationLocation.latitude,
-          destinationLocation.longitude
-        ]
+        ramassage:{lontidute: +""+originLocation.longitude+"" , latitude: +""+originLocation.latitude+"" } ,
+        lieudepot:{lontidute: +""+destinationLocation.longitude+"" , latitude: +""+destinationLocation.latitude+"" }
       }
          setIsLoading(true)
         console.log(childData)
+        console.log(addChild+user?.id)
   try {
-        const {data} = await axios.post(addChild+user?._id, childData)
+        const data = await axios.post(addChild+user?.id, childData)
         console.log(data);
         setIsLoading(false)
       } catch (err) {

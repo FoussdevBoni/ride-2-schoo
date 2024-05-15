@@ -13,7 +13,7 @@ export const UserSlice = createSlice({
         isConected : (state, action) =>{
             state.conected=true
         },
-        logout: (state, action) => {
+        logout: (state) => {
             state.user = null;
             state.conected = false;
         }

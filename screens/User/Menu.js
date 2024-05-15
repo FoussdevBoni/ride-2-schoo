@@ -31,7 +31,7 @@ function Menu(props) {
      name: 'Mes enfants'
     },
       {
-     icon: 'history',
+     icon: 'time',
      name: 'Historique'
     },
 

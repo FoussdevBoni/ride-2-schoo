@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import StackAppBarr from '../../components/sections/User/Appbars/StackAppBar';
+import { useNavigation } from '@react-navigation/native';
+import { colors } from '../../assets/styles/colors';
 
 const ReservationForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const navigation = useNavigation()
 
   const handleSubmit = () => {
     // Vous pouvez implémenter ici la logique de soumission du formulaire
@@ -19,8 +23,9 @@ const ReservationForm = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Formulaire de Réservation</Text>
-      <TextInput
+       <StackAppBarr title={'Formulaire de Réservation'}  goBack={navigation.goBack}/>
+       <View style={{padding: 10}}>
+         <TextInput
         style={styles.input}
         placeholder="Nom"
         value={name}
@@ -43,6 +48,7 @@ const ReservationForm = () => {
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Réserver</Text>
       </TouchableOpacity>
+       </View>
     </View>
   );
 };
@@ -50,7 +56,6 @@ const ReservationForm = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#fff',
   },
   heading: {
@@ -68,7 +73,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: colors.primary,
     padding: 10,
     borderRadius: 5,
   },

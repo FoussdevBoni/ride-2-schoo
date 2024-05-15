@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, FlatList, Animated, Easing } from 'react-native';
+import { View, StyleSheet, FlatList, Animated, Easing, Text } from 'react-native';
 import { enableScreens } from 'react-native-screens';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { onValue, ref } from 'firebase/database';
@@ -15,11 +15,11 @@ enableScreens();
 
 
   
-const NotificationsScreen = () => {
-   const [notifications , setNotifications] = useState()
+const NotificationsScreen = ({user}) => {
+   const [notifications , setNotifications] = useState([])
  const navigation = useNavigation()
 
-
+     const userId = user.id || user._id
  
   useEffect(()=>{
     const notificationsRef = ref(db, 'notifications')
@@ -31,7 +31,11 @@ const NotificationsScreen = () => {
           ...value,
           id: key
         }))
-        setNotifications(dataArray)
+
+        const filtered = dataArray.filter(notification=>(
+          notification?.receivers?.includes(userId)
+        ))
+        setNotifications(filtered)
       }
     })
   },[])
@@ -41,7 +45,9 @@ const NotificationsScreen = () => {
   return (
      <View style={styles.container}>
         <StackAppBarr title={'Notifications'} goBack={navigation.goBack}/>
-        <ScrollView style={{padding: 12}}>
+          {
+            notifications.length>0 ? (
+                 <ScrollView style={{padding: 12}}>
             {
                 notifications&&notifications.map((item)=>{
                   return (
@@ -50,6 +56,12 @@ const NotificationsScreen = () => {
                 })
             }
         </ScrollView>
+            ):( <View style={{flex: 1 , justifyContent:'center' , alignItems: 'center'}}>
+                <Text>
+                  Aucune notification
+                </Text>
+            </View>)
+          }
      </View>
   );
 };

@@ -1,28 +1,39 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Avatar, Card, Divider, List, Paragraph, Title } from 'react-native-paper';
+import { Avatar, Card, Divider, List, Paragraph, Switch, Title } from 'react-native-paper';
+import { getChildren } from '../../../../utils/api';
+import { useSelector } from 'react-redux';
 
 
 
 
-function ChildItem({user , child}) {
+function ChildItem({user , child , onSwitchChange}) {
 const navigation = useNavigation()
+   const schools = useSelector((state)=> state.schools.schools)
+   const school  = schools.filter(school=>(school._id===child?.ecole))
 
 
     return (
         <TouchableOpacity onPress={()=>{
-            navigation.navigate('child-details' , {user , child})
+           if (child.isChecked) {
+                onSwitchChange(child.id , false)
+           }else{
+             onSwitchChange(child.id , true)
+           }
         }} style= {{ paddingHorizontal: 8}}>
-            <List.Item style= {{backgroundColor: 'white', marginVertical: 1}} title = {'DOSSOU Hubert'} left={()=>(
+            <List.Item style= {{backgroundColor: 'white', marginVertical: 1}} title = {child?.nom} left={()=>(
                 <View style={styles.profilContainer}>
                         <Image source={{uri: 'https://www.shutterstock.com/image-photo/portrait-smiling-african-american-schoolboy-260nw-2326745069.jpg'}} style={styles.driverProfil}/>
                 </View>
-            )}   description={'Douala'} right={()=>(
-                 <View style={{marginTop: 15}}>
-                     <Ionicons  size={24} name='chevron-forward' style={{opacity: 0.2 , fontWeight: '100'}}/>
-                 </View>
+            )}   description={school[0].nomEcole} right={()=>(
+               
+                 <Switch
+                   value={child.isChecked}
+                   onValueChange={(newValue) => onSwitchChange(child.id, newValue)}
+          />
             )}>
 
             </List.Item>

@@ -9,23 +9,24 @@ import { colors } from '../../../assets/styles/colors';
 import StackAppBarr from '../../../components/sections/User/Appbars/StackAppBar';
 import { getSchoolsFromAdmins } from '../../../functions/getShools';
 import { takePhoto } from '../../../functions/uploadPhoto';
+import {  Select } from 'native-base';
+import { saveSchools } from '../../../redurcer/schoolsSlice';
 
 const ChildForm = ({user}) => {
   const [school, setSchool] = useState('');
   const [schools , setSchools] = useState([])
   const navigation = useNavigation()
   const [permission, requestPermission] = ImagePicker.useCameraPermissions();
-
-
+   const [shcooId , setSchoolId]= useState()
+  const [service, setService] = React.useState("");
+  const dispatch = useDispatch()
   const [child, setChild] = useState({
-   abonnement: 'dfdfdfdfdfdfdfdf',
-   ecole: '',
-   photo: 'mmmmm'
+   abonnement: '65fad65b5c542bf7f4a33009',
+   photo: 'Ma photo'
   });
 
 
   const handleChoosePhoto = async () => {
-   
           if (permission?.status !== ImagePicker.PermissionStatus.GRANTED) {
             requestPermission()
           }else{
@@ -38,13 +39,13 @@ const ChildForm = ({user}) => {
           }
   };
 
+
+
   const handleChange = (key, value) => {
-    setChild({
+      setChild({
       ...child,
       [key]: value
     })
-
-    console.log(value)
   }
 
 
@@ -53,39 +54,51 @@ const ChildForm = ({user}) => {
     navigation.navigate('itineraire-config' , {child})
   };
 
-  async function fetchSchools() {
+ 
+
+useEffect(()=>{
+   async function fetchSchools() {
     try {
         const schools = await getSchoolsFromAdmins();
         console.log(schools)
-        setSchools(schools); // Faire quelque chose avec les écoles récupérées
+        setSchools(schools); 
+        dispatch(saveSchools(schools))
+        // Faire quelque chose avec les écoles récupérées
     } catch (error) {
         // Gérer les erreurs
         console.error("Erreur lors de la récupération des écoles:", error);
     }
-}
+  }
 
-useEffect(()=>{
   fetchSchools()
-  console.log('')
   
 }, [])
-
   return (
    <View style={{flex: 1}}>
     <StackAppBarr  title={'Ajouter un enfant'} goBack={navigation.goBack}/>
      {
-      schools.length>0 ?( <ScrollView style={styles.container}>
+      schools.length>0?( <ScrollView style={styles.container}>
       <View style={styles.selected}>
-        <Picker
-          label="École de l'enfant"
-          value={school}
-          onValueChange={(itemValue) => handleChange('ecole', itemValue?._id)}
-          style={styles.selected}
-        >
-          {schools?.map((school, index) => (
-            <Picker.Item  key={index} label={school.nomEcole} value={school} />
-          ))}
-        </Picker>
+         <Select selectedValue={school} minWidth="200" accessibilityLabel={school.nomEcole} placeholder={school.nomEcole} _selectedItem={{
+        bg: "teal.600",
+        endIcon: null
+      }} mt={1} onValueChange={itemValue =>{
+         setSchool(itemValue)
+        handleChange('ecole', itemValue._id)
+      }}>
+        {
+          schools.map((shool)=>{
+             return(
+              
+                <Select.Item label={shool.nomEcole} value={shool} />
+            
+            )
+          } 
+         
+          )
+        }
+         
+        </Select>
       </View>
       <TextInput
         label="Nom et prénom(s)"
@@ -117,6 +130,7 @@ useEffect(()=>{
         onChangeText={text => handleChange('heureDepart', text)}
         style={styles.input}
       />
+       
       <TouchableOpacity mode="contained" onPress={()=>{
         handleChoosePhoto()
        }} style={[styles.button, {height:40, justifyContent:'center'}]}>

@@ -9,4 +9,5 @@ export const getAdmins =  `${URL}/admin/allAdmin`
 export const getSchools = `${URL}/ecole/getSchools`
 
 export const addChild= `${URL}/parent/addChild/`
+export const getChildren =  `${URL}/enfant/getEnfantParent`
 

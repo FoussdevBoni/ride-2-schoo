@@ -5,12 +5,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import  UserSlice  from "./userSlice";
 import  SideBarSlice  from "./sideBarsSlice";
 import  ChildSlice  from "./childSlice";
+import schoolsSlice from "./schoolsSlice";
 
 
 const routerRedurcer = combineReducers({
     currentUser: UserSlice,
     sideBard: SideBarSlice,
-    myChild: ChildSlice
+    myChild: ChildSlice, 
+    schools: schoolsSlice
 })
 
 const persistConfig = {

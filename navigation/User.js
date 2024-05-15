@@ -26,6 +26,7 @@ import ConfigResults from '../screens/User/AddChild/IteConfig';
 import MapRoutes from '../screens/User/AddChild/IteConfigMap';
 import Menu from '../screens/User/Menu';
 import MealsList from '../screens/Cantine/Menu';
+import ReservationForm from '../screens/Cantine/Reservation';
 
 
 
@@ -149,7 +150,9 @@ const User = () => {
          <Stack.Screen name="repas-cantine" options={{ headerShown: false }}>
               {props=><MealsList {...props} user={user} />}
         </Stack.Screen>
-         
+           <Stack.Screen name="reservation-form" options={{ headerShown: false }}>
+              {props=><ReservationForm {...props} user={user} />}
+        </Stack.Screen>
    </Stack.Navigator>
     </NavigationContainer>
  </View>
