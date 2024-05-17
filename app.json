@@ -44,16 +44,10 @@
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE"
-      ],
-      "package": "com.adamsdev237.snack65ad28d901bd41c2905159b35e55fb3a"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "6a3e4f89-4bcf-4c88-918a-029ecbd70c59"
-      }
     }
   }
 }

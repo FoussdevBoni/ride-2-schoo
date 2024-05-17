@@ -22,6 +22,7 @@ const Map = ({user , enfants}) => {
 
     function getDriversPosition() {
         const enfant = enfants[0]
+        console.log('locations/'+enfant.chauffeur+'/'+user?.id)
       const dataRef = ref(db, 'locations/'+enfant.chauffeur+'/'+user?.id)
       onValue(dataRef , (snapshot)=>{
         const data = snapshot.val()
@@ -34,11 +35,9 @@ const Map = ({user , enfants}) => {
 
 
 
-
-   if (location) {
-      getDriversPosition()
-   }
-  },[enfants , user , location , distance])
+        getDriversPosition()
+   
+  },[enfants , user  , distance])
 
    
    useEffect(()=>{
